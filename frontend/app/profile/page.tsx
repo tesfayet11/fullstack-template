@@ -1,6 +1,9 @@
-import { useAuth } from '../auth/AuthContext';
+'use client';
 
-export function ProfilePage() {
+import { ProtectedRoute } from '@/components/ProtectedRoute';
+import { useAuth } from '@/lib/auth/AuthContext';
+
+function ProfileContent() {
   const { user } = useAuth();
 
   return (
@@ -17,5 +20,13 @@ export function ProfilePage() {
         </dl>
       )}
     </div>
+  );
+}
+
+export default function ProfilePage() {
+  return (
+    <ProtectedRoute>
+      <ProfileContent />
+    </ProtectedRoute>
   );
 }

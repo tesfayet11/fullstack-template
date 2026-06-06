@@ -1,17 +1,26 @@
-import { useState, type FormEvent } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { useAuth } from '../auth/AuthContext';
+'use client';
 
-export function LoginPage() {
-  const { login, isAuthenticated } = useAuth();
-  const navigate = useNavigate();
+import { useState, useEffect, type FormEvent } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/lib/auth/AuthContext';
+
+export default function LoginPage() {
+  const { login, isAuthenticated, isLoading } = useAuth();
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  if (isAuthenticated) {
-    return <Navigate to="/dashboard" replace />;
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      router.replace('/dashboard');
+    }
+  }, [isAuthenticated, isLoading, router]);
+
+  if (isLoading || isAuthenticated) {
+    return <div className="page">Loading...</div>;
   }
 
   async function handleSubmit(event: FormEvent) {
@@ -21,7 +30,7 @@ export function LoginPage() {
 
     try {
       await login(email, password);
-      navigate('/dashboard');
+      router.push('/dashboard');
     } catch {
       setError('Invalid email or password');
     } finally {
@@ -58,7 +67,7 @@ export function LoginPage() {
         </button>
       </form>
       <p>
-        No account? <Link to="/register">Register</Link>
+        No account? <Link href="/register">Register</Link>
       </p>
     </div>
   );

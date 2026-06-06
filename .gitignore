@@ -21,8 +21,9 @@ backend/.mvn/wrapper/maven-wrapper.jar
 
 # Node / React
 frontend/node_modules/
-frontend/dist/
-frontend/.env
+frontend/.next/
+frontend/out/
+frontend/.env.local
 
 # Logs
 *.log

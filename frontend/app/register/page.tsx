@@ -1,17 +1,26 @@
-import { useState, type FormEvent } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { useAuth } from '../auth/AuthContext';
+'use client';
 
-export function RegisterPage() {
-  const { register, isAuthenticated } = useAuth();
-  const navigate = useNavigate();
+import { useState, useEffect, type FormEvent } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/lib/auth/AuthContext';
+
+export default function RegisterPage() {
+  const { register, isAuthenticated, isLoading } = useAuth();
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  if (isAuthenticated) {
-    return <Navigate to="/dashboard" replace />;
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      router.replace('/dashboard');
+    }
+  }, [isAuthenticated, isLoading, router]);
+
+  if (isLoading || isAuthenticated) {
+    return <div className="page">Loading...</div>;
   }
 
   async function handleSubmit(event: FormEvent) {
@@ -21,7 +30,7 @@ export function RegisterPage() {
 
     try {
       await register(email, password);
-      navigate('/dashboard');
+      router.push('/dashboard');
     } catch {
       setError('Could not create account. Email may already be in use.');
     } finally {
@@ -58,7 +67,7 @@ export function RegisterPage() {
         </button>
       </form>
       <p>
-        Already have an account? <Link to="/login">Login</Link>
+        Already have an account? <Link href="/login">Login</Link>
       </p>
     </div>
   );

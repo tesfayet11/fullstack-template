@@ -64,7 +64,7 @@ if [ -f "$ROOT_DIR/.env.example" ]; then
 fi
 
 if [ -f "$ROOT_DIR/frontend/.env.example" ]; then
-  cp "$ROOT_DIR/frontend/.env.example" "$ROOT_DIR/frontend/.env"
+  cp "$ROOT_DIR/frontend/.env.example" "$ROOT_DIR/frontend/.env.local"
 fi
 
 MAIN_CLASS_DIR="$JAVA_SRC/$NEW_PACKAGE_PATH"
@@ -86,4 +86,4 @@ echo "Next steps:"
 echo "  1. docker compose up -d"
 echo "  2. cd backend && ./mvnw spring-boot:run"
 echo "  3. cd frontend && npm install && npm run dev"
-echo "  4. Open http://localhost:5173"
+echo "  4. Open http://localhost:3000"

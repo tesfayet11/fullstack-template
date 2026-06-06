@@ -1,7 +1,10 @@
-import { useState, type ChangeEvent } from 'react';
-import { uploadFile } from '../api/files';
+'use client';
 
-export function DashboardPage() {
+import { useState, type ChangeEvent } from 'react';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
+import { uploadFile } from '@/lib/api/files';
+
+function DashboardContent() {
   const [uploadResult, setUploadResult] = useState<{ key: string; url: string } | null>(null);
   const [error, setError] = useState('');
   const [isUploading, setIsUploading] = useState(false);
@@ -53,5 +56,13 @@ export function DashboardPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <ProtectedRoute>
+      <DashboardContent />
+    </ProtectedRoute>
   );
 }

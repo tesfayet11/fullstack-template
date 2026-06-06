@@ -2,7 +2,7 @@
 
 Reusable monorepo template with:
 
-- **React** (Vite + TypeScript) frontend
+- **Next.js** (React + TypeScript) frontend
 - **Spring Boot** backend with embedded JWT auth
 - **PostgreSQL** database with Flyway migrations
 - **MinIO** (S3-compatible) object storage
@@ -37,13 +37,13 @@ npm install
 npm run dev
 ```
 
-6. Open [http://localhost:5173](http://localhost:5173)
+6. Open [http://localhost:3000](http://localhost:3000)
 
 ## Local Services
 
 | Service | URL | Credentials |
 |---------|-----|-------------|
-| Frontend | http://localhost:5173 | — |
+| Frontend | http://localhost:3000 | — |
 | Backend API | http://localhost:8080/api | — |
 | PostgreSQL | localhost:5432 | `postgres` / `postgres` |
 | MinIO API | http://localhost:9000 | `minioadmin` / `minioadmin` |
@@ -82,13 +82,14 @@ Key variables:
 - `JWT_SECRET` — change to a long random string (32+ chars)
 - `DB_*` — PostgreSQL connection
 - `S3_*` — MinIO locally; swap endpoint/credentials for real AWS S3 in production
-- `VITE_API_URL` — frontend API base URL
+- `NEXT_PUBLIC_API_URL` — frontend API base URL
+- `CORS_ALLOWED_ORIGIN` — must match frontend URL (`http://localhost:3000`)
 
 ## Project Structure
 
 ```
 template/
-├── frontend/          # React app
+├── frontend/          # Next.js app
 ├── backend/           # Spring Boot API
 ├── docker-compose.yml # Postgres + MinIO
 ├── scripts/           # init-project.sh
@@ -103,11 +104,10 @@ template/
 2. Add JPA entity + repository
 3. Add REST controller and DTOs
 
-### Add a new React page
+### Add a new Next.js page
 
-1. Create a page component in `frontend/src/pages/`
-2. Register the route in `frontend/src/App.tsx`
-3. Add API functions in `frontend/src/api/`
+1. Create a route in `frontend/app/<route>/page.tsx`
+2. Add API functions in `frontend/lib/api/` if needed
 
 ### Use real AWS S3
 
